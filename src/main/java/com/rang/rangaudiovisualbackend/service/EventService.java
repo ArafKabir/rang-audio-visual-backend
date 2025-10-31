@@ -1,4 +1,5 @@
 package com.rang.rangaudiovisualbackend.service;
 
-public class EventService {
+public interface EventService {
+
 }
