@@ -1,9 +1,9 @@
 package com.rang.rangaudiovisualbackend.controller;
 
 
-import com.rang.rangaudiovisualbackend.dto.AdminDTO;
-import com.rang.rangaudiovisualbackend.mapper.AdminMapper;
-import com.rang.rangaudiovisualbackend.requests.LoginRequest;
+import com.rang.rangaudiovisualbackend.domain.dto.AdminDTO;
+import com.rang.rangaudiovisualbackend.domain.mapper.AdminMapper;
+import com.rang.rangaudiovisualbackend.domain.requests.LoginRequest;
 import com.rang.rangaudiovisualbackend.service.AdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

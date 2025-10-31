@@ -1,7 +1,7 @@
 package com.rang.rangaudiovisualbackend.service;
 
-import com.rang.rangaudiovisualbackend.entity.Admin;
-import com.rang.rangaudiovisualbackend.requests.LoginRequest;
+import com.rang.rangaudiovisualbackend.domain.entity.Admin;
+import com.rang.rangaudiovisualbackend.domain.requests.LoginRequest;
 import org.springframework.stereotype.Service;
 import java.util.List;
 

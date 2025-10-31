@@ -1,4 +1,4 @@
-package com.rang.rangaudiovisualbackend.entity;
+package com.rang.rangaudiovisualbackend.domain.entity;
 
 
 import jakarta.persistence.*;

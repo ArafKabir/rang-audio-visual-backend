@@ -1,8 +1,8 @@
 package com.rang.rangaudiovisualbackend.service.impl;
 
-import com.rang.rangaudiovisualbackend.entity.Admin;
+import com.rang.rangaudiovisualbackend.domain.entity.Admin;
 import com.rang.rangaudiovisualbackend.repository.AdminRepository;
-import com.rang.rangaudiovisualbackend.requests.LoginRequest;
+import com.rang.rangaudiovisualbackend.domain.requests.LoginRequest;
 import com.rang.rangaudiovisualbackend.service.AdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

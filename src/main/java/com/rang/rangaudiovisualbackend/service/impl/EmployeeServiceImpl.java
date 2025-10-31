@@ -1,6 +1,6 @@
 package com.rang.rangaudiovisualbackend.service.impl;
 
-import com.rang.rangaudiovisualbackend.entity.Employee;
+import com.rang.rangaudiovisualbackend.domain.entity.Employee;
 import com.rang.rangaudiovisualbackend.service.EmployeeService;
 
 import java.util.List;

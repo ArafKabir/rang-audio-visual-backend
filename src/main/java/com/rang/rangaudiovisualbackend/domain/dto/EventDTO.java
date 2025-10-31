@@ -1,4 +1,4 @@
-package com.rang.rangaudiovisualbackend.dto;
+package com.rang.rangaudiovisualbackend.domain.dto;
 
 import java.time.LocalDateTime;
 

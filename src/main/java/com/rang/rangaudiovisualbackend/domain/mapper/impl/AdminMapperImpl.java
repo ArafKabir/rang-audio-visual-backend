@@ -1,8 +1,8 @@
-package com.rang.rangaudiovisualbackend.mapper.impl;
+package com.rang.rangaudiovisualbackend.domain.mapper.impl;
 
-import com.rang.rangaudiovisualbackend.dto.AdminDTO;
-import com.rang.rangaudiovisualbackend.entity.Admin;
-import com.rang.rangaudiovisualbackend.mapper.AdminMapper;
+import com.rang.rangaudiovisualbackend.domain.dto.AdminDTO;
+import com.rang.rangaudiovisualbackend.domain.entity.Admin;
+import com.rang.rangaudiovisualbackend.domain.mapper.AdminMapper;
 import org.springframework.stereotype.Component;
 
 @Component

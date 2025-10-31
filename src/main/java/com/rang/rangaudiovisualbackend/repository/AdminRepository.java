@@ -1,6 +1,6 @@
 package com.rang.rangaudiovisualbackend.repository;
 
-import com.rang.rangaudiovisualbackend.entity.Admin;
+import com.rang.rangaudiovisualbackend.domain.entity.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
