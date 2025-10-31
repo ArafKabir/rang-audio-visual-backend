@@ -12,5 +12,6 @@ public interface AdminService {
    Admin createAccount(Admin admin);
    Admin findByEmail(String email);
    void deleteAccount(Long id);
+   Admin updateAccount(Admin newAdmin);
    List<Admin> findAllAdmins();
 }

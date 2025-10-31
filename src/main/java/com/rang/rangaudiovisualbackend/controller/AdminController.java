@@ -27,4 +27,20 @@ public class AdminController {
         }
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/create")
+    public ResponseEntity<AdminDTO> createAdmin(@RequestBody AdminDTO adminDTO) {
+        return ResponseEntity.ok(adminMapper.toDTOSecure(adminService.createAccount(adminMapper.fromDTO(adminDTO))));
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<AdminDTO> updateAdmin(@RequestBody AdminDTO adminDTO) {
+        return ResponseEntity.ok(adminMapper.toDTOSecure(adminService.updateAccount(adminMapper.fromDTO(adminDTO))));
+    }
+
+    @DeleteMapping("/delete/{adminId}")
+    public ResponseEntity<String> deleteAdmin(@PathVariable Long adminId) {
+        adminService.deleteAccount(adminId);
+        return ResponseEntity.ok("User has been deleted");
+    }
 }

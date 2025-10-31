@@ -35,6 +35,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Admin updateAccount(Admin newAdmin) {
+        return null;
+    }
+
+    @Override
     public List<Admin> findAllAdmins() {
         return List.of();
     }
