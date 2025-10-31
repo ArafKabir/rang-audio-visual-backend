@@ -1,4 +1,4 @@
 package com.rang.rangaudiovisualbackend.repository;
 
-public class EventRepository {
+public interface EventRepository {
 }
