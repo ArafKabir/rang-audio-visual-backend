@@ -13,6 +13,6 @@ public interface AdminService {
    Admin createAccount(Admin admin);
    Admin findByEmail(String email);
    void deleteAccount(Long id);
-   Admin updateAccount(Admin newAdmin);
+   AdminDTO updateAccount(AdminDTO newAdminDTO);
    List<AdminDTO> findAllAdmins();
 }

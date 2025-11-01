@@ -8,6 +8,7 @@ import com.rang.rangaudiovisualbackend.repository.AdminRepository;
 import com.rang.rangaudiovisualbackend.domain.requests.LoginRequest;
 import com.rang.rangaudiovisualbackend.service.AdminService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final AdminMapper adminMapper;
 
     @Override
     public Admin login(LoginRequest loginRequest) {
@@ -63,40 +65,39 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin updateAccount(Admin updatedAdmin) {
+    public AdminDTO updateAccount(AdminDTO updatedAdminDTO) {
 
-        //Finding the admin from the database
-        Admin existingAdmin = adminRepository.findById(updatedAdmin.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid id"));
 
-        // update email
-        if (updatedAdmin.getEmail() != null && !updatedAdmin.getEmail().isEmpty()) {
-            existingAdmin.setEmail(updatedAdmin.getEmail());
+        Admin existingAdmin = adminRepository.findById(updatedAdminDTO.id())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid admin ID"));
+
+
+        if (updatedAdminDTO.email() != null && !updatedAdminDTO.email().isEmpty()) {
+            existingAdmin.setEmail(updatedAdminDTO.email());
         }
 
-        // update password
-        if (updatedAdmin.getPassword() != null && !updatedAdmin.getPassword().isEmpty()) {
-            existingAdmin.setPassword(updatedAdmin.getPassword());
+        if (updatedAdminDTO.password() != null && !updatedAdminDTO.password().isEmpty()) {
+            // hash the password before saving
+            existingAdmin.setPassword(passwordEncoder.encode(updatedAdminDTO.password()));
         }
 
-        // update name
-        if (updatedAdmin.getName() != null && !updatedAdmin.getName().isEmpty()) {
-            existingAdmin.setName(updatedAdmin.getName());
+        if (updatedAdminDTO.name() != null && !updatedAdminDTO.name().isEmpty()) {
+            existingAdmin.setName(updatedAdminDTO.name());
         }
 
-        // update phone number
-        if (updatedAdmin.getPhoneNumber() != null && !updatedAdmin.getPhoneNumber().isEmpty()) {
-            existingAdmin.setPhoneNumber(updatedAdmin.getPhoneNumber());
+        if (updatedAdminDTO.phoneNumber() != null && !updatedAdminDTO.phoneNumber().isEmpty()) {
+            existingAdmin.setPhoneNumber(updatedAdminDTO.phoneNumber());
         }
 
-        // update Role
-        if (updatedAdmin.getRole() != null && !updatedAdmin.getRole().isEmpty()) {
-            existingAdmin.setRole(updatedAdmin.getRole());
-
+        if (updatedAdminDTO.role() != null && !updatedAdminDTO.role().isEmpty()) {
+            existingAdmin.setRole(updatedAdminDTO.role());
         }
 
-        return adminRepository.save(existingAdmin);
+        Admin savedAdmin = adminRepository.save(existingAdmin);
+
+        return adminMapper.toDTOSecure(savedAdmin);
     }
+
 
     @Override
     public List<AdminDTO> findAllAdmins() {

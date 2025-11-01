@@ -35,7 +35,7 @@ public class AdminController {
 
     @PostMapping("/update")
     public ResponseEntity<AdminDTO> updateAdmin(@RequestBody AdminDTO adminDTO) {
-        return ResponseEntity.ok(adminMapper.toDTOSecure(adminService.updateAccount(adminMapper.fromDTO(adminDTO))));
+        return ResponseEntity.ok(adminService.updateAccount(adminDTO));
     }
 
     @DeleteMapping("/delete/{adminId}")
