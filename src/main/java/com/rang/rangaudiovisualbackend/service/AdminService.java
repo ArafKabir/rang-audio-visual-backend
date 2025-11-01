@@ -10,7 +10,7 @@ import java.util.List;
 public interface AdminService {
 
    Admin login(LoginRequest loginRequest);
-   Admin createAccount(Admin admin);
+   AdminDTO createAccount(AdminDTO adminDto);
    Admin findByEmail(String email);
    void deleteAccount(Long id);
    AdminDTO updateAccount(AdminDTO newAdminDTO);

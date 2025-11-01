@@ -30,7 +30,7 @@ public class AdminController {
 
     @PostMapping("/create")
     public ResponseEntity<AdminDTO> createAdmin(@RequestBody AdminDTO adminDTO) {
-        return ResponseEntity.ok(adminMapper.toDTOSecure(adminService.createAccount(adminMapper.fromDTO(adminDTO))));
+        return ResponseEntity.ok(adminService.createAccount(adminDTO));
     }
 
     @PostMapping("/update")

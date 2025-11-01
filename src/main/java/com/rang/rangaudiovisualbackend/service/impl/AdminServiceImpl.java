@@ -44,11 +44,25 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public Admin createAccount(Admin admin) {
-        // saving the password in the database after hashing it
+    public AdminDTO createAccount(AdminDTO adminDTO) {
+
+        if (adminDTO.email() == null || adminDTO.password() == null) {
+            throw new IllegalArgumentException("Email and password must not be null");
+        }
+
+        if (adminRepository.findByEmail(adminDTO.email()).isPresent()) {
+            throw new IllegalArgumentException("Email already registered");
+        }
+
+        Admin admin = adminMapper.fromDTO(adminDTO);
+
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-        return adminRepository.save(admin);
+
+        Admin savedAdmin = adminRepository.save(admin);
+
+        return adminMapper.toDTOSecure(savedAdmin);
     }
+
 
     @Override
     public Admin findByEmail(String email) {

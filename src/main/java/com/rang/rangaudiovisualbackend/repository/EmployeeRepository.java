@@ -1,4 +1,7 @@
 package com.rang.rangaudiovisualbackend.repository;
 
-public interface EmployeeRepository {
+import com.rang.rangaudiovisualbackend.domain.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EmployeeRepository extends JpaRepository<Employee,Long> {
 }
