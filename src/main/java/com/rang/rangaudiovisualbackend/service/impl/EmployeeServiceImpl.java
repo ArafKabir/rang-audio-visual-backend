@@ -1,19 +1,35 @@
 package com.rang.rangaudiovisualbackend.service.impl;
 
+import com.rang.rangaudiovisualbackend.domain.dto.EmployeeDTO;
 import com.rang.rangaudiovisualbackend.domain.entity.Employee;
+import com.rang.rangaudiovisualbackend.domain.mapper.EmployeeMapper;
+import com.rang.rangaudiovisualbackend.domain.mapper.impl.EmployeeMapperImpl;
+import com.rang.rangaudiovisualbackend.repository.EmployeeRepository;
 import com.rang.rangaudiovisualbackend.service.EmployeeService;
 
 import java.util.List;
 
 public class EmployeeServiceImpl implements EmployeeService {
+
+    EmployeeRepository employeeRepository;
+    EmployeeMapper employeeMapper = new EmployeeMapperImpl();
+
     @Override
-    public Employee createAccount(Employee employee) {
-        return null;
+    public EmployeeDTO createAccount(EmployeeDTO employeeDTO) {
+        if(employeeDTO.email() ==  null ||  employeeDTO.phoneNumber() ==  null){
+            throw new IllegalArgumentException("Email or phone number must not be null.");
+        }
+
+        Employee employee = employeeMapper.fromDTO(employeeDTO);
+        Employee savedEmployee = employeeRepository.save(employee);
+
+        return employeeMapper.toDTO(savedEmployee);
     }
 
     @Override
     public Employee findByEmail(String email) {
-        return null;
+        return employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
     }
 
     @Override
