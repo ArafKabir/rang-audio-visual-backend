@@ -2,9 +2,9 @@ package com.rang.rangaudiovisualbackend.controller;
 
 
 import com.rang.rangaudiovisualbackend.domain.dto.AdminDTO;
-import com.rang.rangaudiovisualbackend.domain.mapper.AdminMapper;
 import com.rang.rangaudiovisualbackend.domain.requests.LoginRequest;
 import com.rang.rangaudiovisualbackend.service.AdminService;
+import com.rang.rangaudiovisualbackend.service.impl.AdminServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +15,26 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class AdminController {
     private final AdminService adminService;
-    private final AdminMapper adminMapper;
+    private final AdminServiceImpl adminServiceImpl;
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) {
-        AdminDTO response;
         try {
-            response = adminMapper.toDTOSecure(adminService.login(loginRequest));
+            AdminDTO loggedInAdminDTO = adminService.login(loginRequest);
+            return  ResponseEntity.ok(loggedInAdminDTO);
         } catch (IllegalArgumentException illegalArgumentException){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{admin_email}")
+    public ResponseEntity<Object> getAdminByEmail(@PathVariable String admin_email) {
+        try{
+            AdminDTO admin = adminServiceImpl.findByEmail(admin_email);
+            return ResponseEntity.ok(admin);
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/create")
@@ -38,9 +47,9 @@ public class AdminController {
         return ResponseEntity.ok(adminService.updateAccount(adminDTO));
     }
 
-    @DeleteMapping("/delete/{adminId}")
-    public ResponseEntity<String> deleteAdmin(@PathVariable Long adminId) {
-        adminService.deleteAccount(adminId);
+    @DeleteMapping("/delete/{admin_id}")
+    public ResponseEntity<String> deleteAdmin(@PathVariable Long admin_id) {
+        adminService.deleteAccount(admin_id);
         return ResponseEntity.ok("User has been deleted");
     }
 }

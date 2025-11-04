@@ -31,7 +31,7 @@ public class Event {
     @Column(name = "event_location")
     private String location;
 
-    @OneToMany(mappedBy = "event", fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "event", fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<EventEmployee> eventEmployees =  new HashSet<>();
 
 }

@@ -24,7 +24,7 @@ public class AdminServiceImpl implements AdminService {
     private final AdminMapper adminMapper;
 
     @Override
-    public Admin login(LoginRequest loginRequest) {
+    public AdminDTO login(LoginRequest loginRequest) {
         if (loginRequest.email() == null || loginRequest.password() == null) {
             throw new IllegalArgumentException("Email or password is missing");
         }
@@ -39,7 +39,7 @@ public class AdminServiceImpl implements AdminService {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
-        return admin;
+        return adminMapper.toDTOSecure(admin);
     }
 
 
@@ -65,9 +65,12 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public Admin findByEmail(String email) {
-        return adminRepository.findByEmail(email)
+    public AdminDTO findByEmail(String email) {
+        Admin admin = adminRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Admin not found"));
+
+        // Convert to secure DTO before sending back to controller
+        return adminMapper.toDTOSecure(admin);
     }
 
     @Override
@@ -115,7 +118,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<AdminDTO> findAllAdmins() {
-        AdminMapper adminMapper = new AdminMapperImpl();
         // hiding the password by transferring it to a AdminDTO
         return adminRepository.findAll().stream().map(adminMapper::toDTOSecure).collect(Collectors.toList());
     }

@@ -9,9 +9,9 @@ import java.util.List;
 @Service
 public interface AdminService {
 
-   Admin login(LoginRequest loginRequest);
+   AdminDTO login(LoginRequest loginRequest);
    AdminDTO createAccount(AdminDTO adminDto);
-   Admin findByEmail(String email);
+   AdminDTO findByEmail(String email);
    void deleteAccount(Long id);
    AdminDTO updateAccount(AdminDTO newAdminDTO);
    List<AdminDTO> findAllAdmins();
