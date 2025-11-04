@@ -3,7 +3,9 @@ package com.rang.rangaudiovisualbackend.domain.mapper.impl;
 import com.rang.rangaudiovisualbackend.domain.dto.EmployeeDTO;
 import com.rang.rangaudiovisualbackend.domain.entity.Employee;
 import com.rang.rangaudiovisualbackend.domain.mapper.EmployeeMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EmployeeMapperImpl implements EmployeeMapper {
     @Override
     public EmployeeDTO toDTO(Employee employee) {
