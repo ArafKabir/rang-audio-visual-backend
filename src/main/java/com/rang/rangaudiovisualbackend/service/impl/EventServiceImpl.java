@@ -125,6 +125,28 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDTO removeEmployeeFromEvent(Long eventId, Long employeeId) {
-        return null;
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found with id: " + eventId));
+
+
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found with id: " + employeeId));
+
+
+        EventEmployee eventEmployee = eventEmployeeRepository
+                .findByEventAndEmployee(event, employee)
+                .orElseThrow(() -> new IllegalArgumentException("Employee is not assigned to this event"));
+
+        // Remove the link from both sides
+        event.getEventEmployees().remove(eventEmployee);
+
+        // Delete the link record
+        eventEmployeeRepository.delete(eventEmployee);
+
+        // Save event to persist changes
+        eventRepository.save(event);
+
+        // Return updated DTO
+        return eventMapper.toDTO(event);
     }
 }
