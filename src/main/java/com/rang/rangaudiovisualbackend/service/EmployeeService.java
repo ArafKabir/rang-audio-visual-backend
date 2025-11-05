@@ -10,6 +10,6 @@ public interface EmployeeService {
     EmployeeDTO createAccount(EmployeeDTO employeeDTO);
     Employee findByEmail(String email);
     void deleteAccount(Long id);
-    List<Employee> findAllEmployees();
-    Employee updateAccount(Employee employee);
+    List<EmployeeDTO> findAllEmployees();
+    EmployeeDTO updateAccount(EmployeeDTO employeeDTO);
 }

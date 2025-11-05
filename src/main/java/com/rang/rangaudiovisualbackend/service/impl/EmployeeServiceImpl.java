@@ -8,6 +8,7 @@ import com.rang.rangaudiovisualbackend.repository.EmployeeRepository;
 import com.rang.rangaudiovisualbackend.service.EmployeeService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -41,12 +42,38 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> findAllEmployees() {
-        return List.of();
+    public List<EmployeeDTO> findAllEmployees() {
+        return employeeRepository.findAll().stream().map(employeeMapper::toDTO).collect(Collectors.toList());
     }
 
     @Override
-    public Employee updateAccount(Employee employee) {
-        return null;
+    public EmployeeDTO updateAccount(EmployeeDTO updatedEmployeeDTO) {
+        Employee existingEmployee = employeeRepository.findById(updatedEmployeeDTO.id())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID"));
+
+        if (updatedEmployeeDTO.firstName() != null && !updatedEmployeeDTO.firstName().isEmpty()) {
+            // hash the password before saving
+            existingEmployee.setFirstName(updatedEmployeeDTO.firstName());
+        }
+
+        if (updatedEmployeeDTO.lastName() != null && !updatedEmployeeDTO.lastName().isEmpty()) {
+            existingEmployee.setLastName(updatedEmployeeDTO.lastName());
+        }
+
+        if (updatedEmployeeDTO.email() != null && !updatedEmployeeDTO.email().isEmpty()) {
+            existingEmployee.setEmail(updatedEmployeeDTO.email());
+        }
+
+        if (updatedEmployeeDTO.phoneNumber() != null && !updatedEmployeeDTO.phoneNumber().isEmpty()) {
+            existingEmployee.setPhoneNumber(updatedEmployeeDTO.phoneNumber());
+        }
+
+        if (updatedEmployeeDTO.hourlyRate() != null && !updatedEmployeeDTO.hourlyRate().isNaN()) {
+            existingEmployee.setHourlyRate(updatedEmployeeDTO.hourlyRate());
+        }
+
+        Employee savedEmployee = employeeRepository.save(existingEmployee);
+
+        return employeeMapper.toDTO(savedEmployee);
     }
 }
