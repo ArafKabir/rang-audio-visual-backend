@@ -2,6 +2,8 @@ package com.rang.rangaudiovisualbackend.controller;
 
 
 import com.rang.rangaudiovisualbackend.domain.dto.AdminDTO;
+import com.rang.rangaudiovisualbackend.domain.entity.Admin;
+import com.rang.rangaudiovisualbackend.domain.mapper.AdminMapper;
 import com.rang.rangaudiovisualbackend.domain.requests.LoginRequest;
 import com.rang.rangaudiovisualbackend.service.AdminService;
 import com.rang.rangaudiovisualbackend.service.impl.AdminServiceImpl;
@@ -16,18 +18,19 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     private final AdminService adminService;
     private final AdminServiceImpl adminServiceImpl;
+    private final AdminMapper adminMapper;
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) {
         try {
-            AdminDTO loggedInAdminDTO = adminService.login(loginRequest);
-            return  ResponseEntity.ok(loggedInAdminDTO);
-        } catch (IllegalArgumentException illegalArgumentException){
-            return ResponseEntity.notFound().build();
+            AdminDTO loggedInAdmin = adminService.login(loginRequest);
+            return ResponseEntity.ok(loggedInAdmin);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(401).body("Invalid email or password");
         }
     }
 
-    @PostMapping("/{admin_email}")
+    @GetMapping("/{admin_email}")
     public ResponseEntity<Object> getAdminByEmail(@PathVariable String admin_email) {
         try{
             AdminDTO admin = adminServiceImpl.findByEmail(admin_email);

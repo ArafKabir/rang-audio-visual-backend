@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public class Event {
     private String name;
 
     @Column(name = "event_date")
-    private LocalDate date;
+    private LocalDateTime date;
 
     @Column(name = "event_location")
     private String location;

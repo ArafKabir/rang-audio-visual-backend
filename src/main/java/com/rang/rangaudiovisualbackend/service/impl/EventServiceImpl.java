@@ -1,5 +1,6 @@
 package com.rang.rangaudiovisualbackend.service.impl;
 
+import com.rang.rangaudiovisualbackend.domain.dto.EmployeeDTO;
 import com.rang.rangaudiovisualbackend.domain.dto.EventDTO;
 import com.rang.rangaudiovisualbackend.domain.dto.EventEmployeeDTO;
 import com.rang.rangaudiovisualbackend.domain.entity.Employee;
@@ -34,7 +35,43 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDTO updateEvent(Long eventId, EventDTO updatedEventDTO) {
-        return null;
+
+        Event existingEvent = eventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found with id: " + eventId));
+
+        if (updatedEventDTO.name() != null && !updatedEventDTO.name().isEmpty()) {
+            existingEvent.setName(updatedEventDTO.name());
+        }
+
+        if (updatedEventDTO.date() != null) {
+            existingEvent.setDate(updatedEventDTO.date());
+        }
+
+        if (updatedEventDTO.location() != null && !updatedEventDTO.location().isEmpty()) {
+            existingEvent.setLocation(updatedEventDTO.location());
+        }
+
+        if (updatedEventDTO.employees() != null && !updatedEventDTO.employees().isEmpty()) {
+            // Clear current associations first
+            existingEvent.getEventEmployees().clear();
+
+            // Add new event–employee links
+            for (EmployeeDTO empDTO : updatedEventDTO.employees()) {
+                Employee employee = employeeRepository.findById(empDTO.id())
+                        .orElseThrow(() -> new IllegalArgumentException("Employee not found with id: " + empDTO.id()));
+
+                EventEmployee eventEmployee = new EventEmployee();
+                eventEmployee.setEvent(existingEvent);
+                eventEmployee.setEmployee(employee);
+                eventEmployeeRepository.save(eventEmployee);
+
+                existingEvent.getEventEmployees().add(eventEmployee);
+            }
+        }
+
+        Event savedEvent = eventRepository.save(existingEvent);
+
+        return eventMapper.toDTO(savedEvent);
     }
 
     @Override
