@@ -3,7 +3,9 @@ package com.rang.rangaudiovisualbackend.domain.mapper.impl;
 import com.rang.rangaudiovisualbackend.domain.dto.WorkSessionDTO;
 import com.rang.rangaudiovisualbackend.domain.entity.WorkSession;
 import com.rang.rangaudiovisualbackend.domain.mapper.WorkSessionMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class WorkSessionMapperImpl implements WorkSessionMapper {
     @Override
     public WorkSessionDTO toDTO(WorkSession workSession) {
