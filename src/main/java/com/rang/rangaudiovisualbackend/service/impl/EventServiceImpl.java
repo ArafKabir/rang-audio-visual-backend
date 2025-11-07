@@ -25,6 +25,7 @@ public class EventServiceImpl implements EventService {
     private final EmployeeRepository employeeRepository;
     private final EventEmployeeRepository eventEmployeeRepository;
     private final EventMapper eventMapper;
+    private final EventEmployeeServiceImpl eventEmployeeServiceImpl;
 
     @Override
     public EventDTO createEvent(EventDTO eventDTO) {
@@ -99,28 +100,8 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDTO assignEmployeeToEvent(Long eventId, Long employeeId) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
-
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
-
-        if (eventEmployeeRepository.existsByEventAndEmployee(event, employee)) {
-            throw new IllegalArgumentException("Employee already assigned to event");
-        }
-
-        EventEmployee eventEmployee = new EventEmployee();
-        eventEmployee.setEvent(event);
-        eventEmployee.setEmployee(employee);
-        eventEmployeeRepository.save(eventEmployee);
-
-        event.getEventEmployees().add(eventEmployee);
-        eventRepository.save(event);
-
-        Event updatedEvent = eventRepository.findById(eventId)
-                .orElseThrow(() -> new IllegalArgumentException("Error updating event"));
-
-        return eventMapper.toDTO(updatedEvent);
+        eventEmployeeServiceImpl.addEmployeeToEvent(eventId, employeeId);
+        return getEventById(eventId);
     }
 
     @Override
