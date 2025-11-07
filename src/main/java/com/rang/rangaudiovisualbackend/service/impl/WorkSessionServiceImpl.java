@@ -3,9 +3,13 @@ package com.rang.rangaudiovisualbackend.service.impl;
 import com.rang.rangaudiovisualbackend.domain.dto.WorkSessionDTO;
 import com.rang.rangaudiovisualbackend.domain.entity.WorkSession;
 import com.rang.rangaudiovisualbackend.service.WorkSessionService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@AllArgsConstructor
 public class WorkSessionServiceImpl implements WorkSessionService {
 
     @Override

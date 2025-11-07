@@ -6,17 +6,18 @@ import com.rang.rangaudiovisualbackend.domain.mapper.EmployeeMapper;
 import com.rang.rangaudiovisualbackend.domain.mapper.impl.EmployeeMapperImpl;
 import com.rang.rangaudiovisualbackend.service.EmployeeService;
 import com.rang.rangaudiovisualbackend.service.impl.EmployeeServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/employee")
+@AllArgsConstructor
 public class EmployeeController {
-    private final EmployeeService employeeService = new EmployeeServiceImpl();
-    private final EmployeeMapper employeeMapper = new EmployeeMapperImpl();
+    private final EmployeeService employeeService;
+    private final EmployeeMapper employeeMapper;
 
     @GetMapping("/{email}")
     public ResponseEntity<EmployeeDTO> getEmployee(@PathVariable String email){
@@ -29,4 +30,24 @@ public class EmployeeController {
 
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO employeeDTO){
+        return ResponseEntity.ok(employeeService.createAccount(employeeDTO));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployee(){
+        return ResponseEntity.ok(employeeService.findAllEmployees());
+    }
+
+    @DeleteMapping("/delete/{employeeId}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable Long employeeId){
+        employeeService.deleteAccount(employeeId);
+        return ResponseEntity.ok("Employee has been deleted");
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employeeDTO){
+        return ResponseEntity.ok(employeeService.updateAccount(employeeDTO));
+    }
 }

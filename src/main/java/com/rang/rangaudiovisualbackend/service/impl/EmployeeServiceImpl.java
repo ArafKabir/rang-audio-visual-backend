@@ -6,10 +6,14 @@ import com.rang.rangaudiovisualbackend.domain.mapper.EmployeeMapper;
 import com.rang.rangaudiovisualbackend.domain.mapper.impl.EmployeeMapperImpl;
 import com.rang.rangaudiovisualbackend.repository.EmployeeRepository;
 import com.rang.rangaudiovisualbackend.service.EmployeeService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
+@AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
     EmployeeRepository employeeRepository;
