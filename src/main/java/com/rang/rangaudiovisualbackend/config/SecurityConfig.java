@@ -27,7 +27,8 @@ public class SecurityConfig {
                                 "/api/v1/admin/create",
                                 "/api/v1/admin/**",
                                 "/api/v1/employee/**",
-                                "/api/v1/event/**"
+                                "/api/v1/event/**",
+                                "/api/v1/session/**"
                         ).permitAll() // allow public access
                         .anyRequest().authenticated() // protect others
                 )

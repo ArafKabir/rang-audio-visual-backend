@@ -76,4 +76,6 @@ public class EventController {
         EventDTO updatedEvent = eventService.removeEmployeeFromEvent(eventId, employeeId);
         return ResponseEntity.ok(updatedEvent);
     }
+
+
 }

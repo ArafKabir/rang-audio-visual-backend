@@ -1,10 +1,14 @@
 package com.rang.rangaudiovisualbackend.service.impl;
 
 import com.rang.rangaudiovisualbackend.domain.dto.WorkSessionDTO;
+import com.rang.rangaudiovisualbackend.domain.entity.Employee;
+import com.rang.rangaudiovisualbackend.domain.entity.Event;
 import com.rang.rangaudiovisualbackend.domain.entity.EventEmployee;
 import com.rang.rangaudiovisualbackend.domain.entity.WorkSession;
 import com.rang.rangaudiovisualbackend.domain.mapper.WorkSessionMapper;
+import com.rang.rangaudiovisualbackend.repository.EmployeeRepository;
 import com.rang.rangaudiovisualbackend.repository.EventEmployeeRepository;
+import com.rang.rangaudiovisualbackend.repository.EventRepository;
 import com.rang.rangaudiovisualbackend.repository.WorkSessionRepository;
 import com.rang.rangaudiovisualbackend.service.WorkSessionService;
 import lombok.AllArgsConstructor;
@@ -18,14 +22,21 @@ public class WorkSessionServiceImpl implements WorkSessionService {
     private WorkSessionRepository workSessionRepository;
     private EventEmployeeRepository eventEmployeeRepository;
     private WorkSessionMapper workSessionMapper;
+    private EventRepository eventRepository;
+    private EmployeeRepository employeeRepository;
 
     @Override
-    public WorkSessionDTO createSession(Long eventEmployeeId, WorkSessionDTO sessionDTO) {
+    public WorkSessionDTO createSession(Long eventId, Long employeeId, WorkSessionDTO workSessionDTO) {
 
-        EventEmployee eventEmployee = eventEmployeeRepository.findById(eventEmployeeId)
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+
+        EventEmployee eventEmployee = eventEmployeeRepository.findByEventAndEmployee(event, employee)
                 .orElseThrow(() -> new IllegalArgumentException("EventEmployee not found"));
 
-        WorkSession workSession = workSessionMapper.fromDTO(sessionDTO);
+        WorkSession workSession = workSessionMapper.fromDTO(workSessionDTO);
         workSession.setEventEmployee(eventEmployee);
 
         WorkSession savedSession = workSessionRepository.save(workSession);
@@ -33,9 +44,9 @@ public class WorkSessionServiceImpl implements WorkSessionService {
     }
 
     @Override
-    public WorkSessionDTO updateSession(Long sessionId, WorkSessionDTO updatedSessionDTO) {
+    public WorkSessionDTO updateSession(WorkSessionDTO updatedSessionDTO) {
 
-        WorkSession session = workSessionRepository.findById(sessionId)
+        WorkSession session = workSessionRepository.findById(updatedSessionDTO.id())
                 .orElseThrow(() -> new IllegalArgumentException("Session not found"));
 
         if (updatedSessionDTO.startTime() != null)
@@ -49,16 +60,21 @@ public class WorkSessionServiceImpl implements WorkSessionService {
 
     @Override
     public void deleteSession(Long sessionId) {
-        if (!workSessionRepository.existsById(sessionId)) {
-            throw new IllegalArgumentException("Session not found");
-        }
-        workSessionRepository.deleteById(sessionId);
+       WorkSession workSession = workSessionRepository.findById(sessionId)
+                .orElseThrow(() -> new IllegalArgumentException("Session not found"));
+
+       workSessionRepository.delete(workSession);
     }
 
     @Override
-    public List<WorkSessionDTO> getAllSessionsByEventEmployee(Long eventEmployeeId) {
+    public List<WorkSessionDTO> getAllSessionsByEventEmployee(Long eventId, Long employeeId) {
 
-        EventEmployee eventEmployee = eventEmployeeRepository.findById(eventEmployeeId)
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+
+        EventEmployee eventEmployee = eventEmployeeRepository.findByEventAndEmployee(event, employee)
                 .orElseThrow(() -> new IllegalArgumentException("EventEmployee not found"));
 
         return workSessionRepository.findAllByEventEmployee(eventEmployee)
@@ -67,15 +83,4 @@ public class WorkSessionServiceImpl implements WorkSessionService {
                 .toList();
     }
 
-    @Override
-    public double getTotalHoursForEventEmployee(Long eventEmployeeId) {
-
-        EventEmployee eventEmployee = eventEmployeeRepository.findById(eventEmployeeId)
-                .orElseThrow(() -> new IllegalArgumentException("EventEmployee not found"));
-
-        List<WorkSession> sessions = workSessionRepository.findAllByEventEmployee(eventEmployee);
-        return sessions.stream()
-                .mapToDouble(WorkSession::getDurationInHours)
-                .sum();
-    }
 }

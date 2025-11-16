@@ -6,5 +6,5 @@ import com.rang.rangaudiovisualbackend.domain.entity.EventEmployee;
 
 public interface EventEmployeeMapper {
     EventEmployeeDTO toDTO(EventEmployee eventEmployee);
-    Employee fromDTO(EventEmployeeDTO eventEmployeeDTO);
+    EventEmployee fromDTO(EventEmployeeDTO eventEmployeeDTO);
 }
