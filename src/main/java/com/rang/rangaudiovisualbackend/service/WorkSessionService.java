@@ -6,10 +6,9 @@ import com.rang.rangaudiovisualbackend.domain.entity.WorkSession;
 import java.util.List;
 
 public interface WorkSessionService {
-    WorkSessionDTO createSession(Long eventEmployeeId, WorkSessionDTO sessionDTO);
-    WorkSessionDTO updateSession(Long sessionId, WorkSessionDTO updatedSessionDTO);
+    WorkSessionDTO createSession(Long eventId, Long employeeId, WorkSessionDTO workSessionDTO);
+    WorkSessionDTO updateSession(WorkSessionDTO updatedSessionDTO);
     void deleteSession(Long sessionId);
 
-    List<WorkSessionDTO> getAllSessionsByEventEmployee(Long eventEmployeeId);
-    double getTotalHoursForEventEmployee(Long eventEmployeeId);
+    List<WorkSessionDTO> getAllSessionsByEventEmployee(Long eventId, Long employeeId);
 }

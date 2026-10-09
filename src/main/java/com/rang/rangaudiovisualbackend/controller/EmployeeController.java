@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("api/v1/employee")
 @AllArgsConstructor
@@ -19,10 +20,10 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     private final EmployeeMapper employeeMapper;
 
-    @GetMapping("/{email}")
-    public ResponseEntity<EmployeeDTO> getEmployee(@PathVariable String email){
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id){
         try {
-            Employee employee = employeeService.findByEmail(email);
+            Employee employee = employeeService.findById(id);
             return ResponseEntity.ok(employeeMapper.toDTO(employee));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

@@ -38,6 +38,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Employee findById(Long id) {
+        return  employeeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+    }
+
+    @Override
     public void deleteAccount(Long id) {
         if (!employeeRepository.existsById(id)) {
             throw new IllegalArgumentException("Employee not found with id: " + id);

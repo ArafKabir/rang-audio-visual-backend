@@ -130,4 +130,14 @@ public class EventServiceImpl implements EventService {
         // Return updated DTO
         return eventMapper.toDTO(event);
     }
+
+    @Override
+    public List<EventEmployeeDTO> getEmployeesByEventId(Long eventId) {
+
+        if (!eventRepository.existsById(eventId)) {
+            throw new IllegalArgumentException("Event not found with id: " + eventId);
+        }
+
+        return eventEmployeeServiceImpl.getAllByEvent(eventId);
+    }
 }

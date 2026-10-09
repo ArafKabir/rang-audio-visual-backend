@@ -1,6 +1,7 @@
 package com.rang.rangaudiovisualbackend.service;
 
 import com.rang.rangaudiovisualbackend.domain.dto.EventDTO;
+import com.rang.rangaudiovisualbackend.domain.dto.EventEmployeeDTO;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface EventService {
     // Relations
     EventDTO assignEmployeeToEvent(Long eventId, Long employeeId);
     EventDTO removeEmployeeFromEvent(Long eventId, Long employeeId);
+
+    List<EventEmployeeDTO> getEmployeesByEventId(Long eventId);
 }
